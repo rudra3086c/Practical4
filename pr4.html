@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dynamic Portal Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      transition: background 0.3s, color 0.3s;
+      margin: 0;
+      padding: 0;
+    }
+    header, footer {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 1em;
+    }
+    .container {
+      padding: 20px;
+    }
+    .faq-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      transition: all 0.3s ease-in-out;
+    }
+    .faq-answer {
+      display: none;
+      margin-top: 5px;
+    }
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+    #notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      display: none;
+    }
+    .slider {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 10px;
+    }
+    .slider::-webkit-scrollbar {
+      display: none;
+    }
+    .card {
+      min-width: 200px;
+      padding: 20px;
+      background: #f4f4f4;
+      border-radius: 12px;
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .dark-mode {
+      background-color: #121212;
+      color: white;
+    }
+    .dark-mode .card {
+      background-color: #1e1e1e;
+    }
+    .theme-toggle {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Dynamic Portal Page</h1>
+  </header>
+  
+  <div class="container">
+    <button class="theme-toggle" id="themeToggle">Toggle Light/Dark Mode</button>
+
+    <h2>FAQs</h2>
+    <div class="faq-item">
+      <strong class="faq-question">What is JavaScript?</strong>
+      <p class="faq-answer">JavaScript is a scripting language used to create dynamic content on web pages.</p>
+    </div>
+    <div class="faq-item">
+      <strong class="faq-question">What is the DOM?</strong>
+      <p class="faq-answer">DOM stands for Document Object Model, and it represents the structure of a web page.</p>
+    </div>
+
+    <h2>Featured Cards</h2>
+    <div class="slider">
+      <div class="card">Card 1: Dashboard</div>
+      <div class="card">Card 2: Settings</div>
+      <div class="card">Card 3: Reports</div>
+    </div>
+
+    <button onclick="showNotification('This is a notification!')">Show Notification</button>
+  </div>
+
+  <div id="notification"></div>
+
+  <footer>
+    <p>&copy; 2025 Dynamic UI Portal</p>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.faq-question').forEach(item => {
+      item.addEventListener('click', () => {
+        const parent = item.parentElement;
+        parent.classList.toggle('active');
+      });
+    });
+
+
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.style.display = 'block';
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000);
+    }
+
+   
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    });
+
+ 
+    window.addEventListener('DOMContentLoaded', () => {
+      const storedTheme = localStorage.getItem('theme');
+      if (storedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+      }
+    });
+  </script>
+</body>
+</html>
