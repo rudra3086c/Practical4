@@ -1,146 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dynamic Portal Page</title>
+  <meta charset="UTF-8">
+  <title>Portal Features</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      transition: background 0.3s, color 0.3s;
-      margin: 0;
-      padding: 0;
+      margin: 30px;
+      background: #f5f5f5;
     }
-    header, footer {
-      background-color: #007bff;
-      color: white;
-      text-align: center;
-      padding: 1em;
-    }
-    .container {
-      padding: 20px;
-    }
+    h2 { margin-top: 30px; }
+
+    /* FAQ */
     .faq-item {
-      border: 1px solid #ccc;
-      padding: 10px;
       margin-bottom: 10px;
-      border-radius: 8px;
-      transition: all 0.3s ease-in-out;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .faq-question {
+      background: #f1f1f1;
+      padding: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 5px 5px 0 0;
     }
     .faq-answer {
       display: none;
-      margin-top: 5px;
+      padding: 15px;
+      background: #fff;
+      border-top: 1px solid #ccc;
+      border-radius: 0 0 5px 5px;
     }
-    .faq-item.active .faq-answer {
+    .active .faq-answer {
       display: block;
     }
-    #notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background-color: #28a745;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 4px;
-      display: none;
+
+    /* Image Slider */
+    .slider-container {
+      width: 400px;
+      height: 250px;
+      overflow: hidden;
+      position: relative;
+      margin: 20px auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      background: #000;
     }
     .slider {
       display: flex;
-      overflow-x: auto;
-      gap: 20px;
-      padding: 10px;
+      width: 100%;
+      transition: transform 0.5s ease-in-out;
     }
-    .slider::-webkit-scrollbar {
-      display: none;
+    .slider img {
+      width: 400px;
+      height: 250px;
+      object-fit: cover;
     }
-    .card {
-      min-width: 200px;
-      padding: 20px;
-      background: #f4f4f4;
-      border-radius: 12px;
-      transition: transform 0.3s;
-    }
-    .card:hover {
-      transform: scale(1.05);
-    }
-    .dark-mode {
-      background-color: #121212;
+    .btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
       color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 50%;
     }
-    .dark-mode .card {
-      background-color: #1e1e1e;
+    .prev { left: 10px; }
+    .next { right: 10px; }
+
+    /* Volume slider */
+    #volumeSlider {
+      width: 300px;
     }
-    .theme-toggle {
-      margin: 10px 0;
+
+    /* Popup buttons */
+    .popup-buttons button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
+    .popup-buttons button:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Dynamic Portal Page</h1>
-  </header>
-  
-  <div class="container">
-    <button class="theme-toggle" id="themeToggle">Toggle Light/Dark Mode</button>
+  <h1>Portal Features Demo</h1>
 
-    <h2>FAQs</h2>
-    <div class="faq-item">
-      <strong class="faq-question">What is JavaScript?</strong>
-      <p class="faq-answer">JavaScript is a scripting language used to create dynamic content on web pages.</p>
-    </div>
-    <div class="faq-item">
-      <strong class="faq-question">What is the DOM?</strong>
-      <p class="faq-answer">DOM stands for Document Object Model, and it represents the structure of a web page.</p>
-    </div>
-
-    <h2>Featured Cards</h2>
-    <div class="slider"></div>
-      <div class="card">Card 1: Dashboard</div>
-      <div class="card">Card 2: Settings</div>
-      <div class="card">Card 3: Reports</div>
-    </div>
-
-    <button onclick="showNotification('This is a notification!')">Show Notification</button>
+  <!-- Popups -->
+  <h2>Simple Popups</h2>
+  <div class="popup-buttons">
+    <button onclick="showAlert()">Show Alert</button>
+    <button onclick="showConfirm()">Show Confirm</button>
+    <button onclick="showPrompt()">Show Prompt</button>
   </div>
 
-  <div id="notification"></div>
+  <!-- Volume Slider -->
+  <h2>Volume Control Slider</h2>
+  <input type="range" id="volumeSlider" min="0" max="100" value="50" oninput="updateValue()">
+  <p>Value: <span id="sliderValue">50</span></p>
 
-  <footer>
-    <p>&copy; 2025 Dynamic UI Portal</p>
-  </footer>
+  <!-- Image Slider -->
+  <h2>Image Slider</h2>
+  <div class="slider-container">
+    <div class="slider" id="slider">
+      <img src="https://media.istockphoto.com/id/505221662/photo/elephants-in-river.jpg?s=1024x1024&w=is&k=20&c=6H1PzDPfOlCwJQZ8XSUQlkNKBgILDmig7RVqD9utJEY=" alt="Slide 1">
+      <img src="https://media.istockphoto.com/id/625599832/photo/tropical-jungle.jpg?s=1024x1024&w=is&k=20&c=qQKcIW3UF73qSYKOLlKRjhsR4ZfnaMEoB5JWjVYWqTM=" alt="Slide 2">
+      <img src="https://media.istockphoto.com/id/995369236/photo/starfish-on-beach.jpg?s=1024x1024&w=is&k=20&c=9Jbv3Y4Mw9XScgxCKTap1yuZ2KbDyyflUyZXU_AiCcs=" alt="Slide 3">
+    </div>
+    <button class="btn prev" onclick="prevSlide()">❮</button>
+    <button class="btn next" onclick="nextSlide()">❯</button>
+  </div>
+
+  <!-- Collapsible FAQ -->
+  <h2>FAQ Section</h2>
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">What is JavaScript?</div>
+    <div class="faq-answer">JavaScript is a programming language used to make web pages interactive.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">What is HTML?</div>
+    <div class="faq-answer">HTML stands for HyperText Markup Language and is used to structure web pages.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFAQ(this)">What is CSS?</div>
+    <div class="faq-answer">CSS stands for Cascading Style Sheets and is used to style web pages.</div>
+  </div>
 
   <script>
-    document.querySelectorAll('.faq-question').forEach(item => {
-      item.addEventListener('click', () => {
-        const parent = item.parentElement;
-        parent.classList.toggle('active');
-      });
-    });
-
-
-    function showNotification(message) {
-      const notification = document.getElementById('notification');
-      notification.textContent = message;
-      notification.style.display = 'block';
-      setTimeout(() => {
-        notification.style.display = 'none';
-      }, 3000);
+    // Popups
+    function showAlert() {
+      alert("This is an alert popup!");
+    }
+    function showConfirm() {
+      let result = confirm("Are you sure?");
+      if(result) { alert("You clicked OK"); }
+      else { alert("You clicked Cancel"); }
+    }
+    function showPrompt() {
+      let name = prompt("Enter your name:");
+      if(name) { alert("Hello, " + name); }
     }
 
-   
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-    });
+    // Volume slider
+    function updateValue() {
+      let value = document.getElementById("volumeSlider").value;
+      document.getElementById("sliderValue").innerText = value;
+    }
 
- 
-    window.addEventListener('DOMContentLoaded', () => {
-      const storedTheme = localStorage.getItem('theme');
-      if (storedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-      }
-    });
+    // Image Slider
+    let index = 0;
+    const slides = document.querySelectorAll("#slider img");
+    function showSlide() {
+      document.getElementById("slider").style.transform = `translateX(-${index * 400}px)`;
+    }
+    function nextSlide() {
+      index = (index + 1) % slides.length;
+      showSlide();
+    }
+    function prevSlide() {
+      index = (index - 1 + slides.length) % slides.length;
+      showSlide();
+    }
+
+    // Collapsible FAQ
+    function toggleFAQ(element) {
+      let allItems = document.querySelectorAll('.faq-item');
+      allItems.forEach(item => {
+        if(item !== element.parentNode) {
+          item.classList.remove('active');
+        }
+      });
+      element.parentNode.classList.toggle('active');
+    }
   </script>
 </body>
 </html>
